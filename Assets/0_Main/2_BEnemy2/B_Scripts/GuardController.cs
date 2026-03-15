@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TestScript : MonoBehaviour
+public class GuardController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -12,5 +12,13 @@ public class TestScript : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == ("PlayerAttack"))
+        {
+            Destroy(other);
+        }
     }
 }

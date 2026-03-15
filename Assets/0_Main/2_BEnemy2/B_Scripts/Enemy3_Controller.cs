@@ -11,22 +11,27 @@ public class Enemy3_Controller : MonoBehaviour
 
     Rigidbody rbody;
 
-    float distruction = 5.0f;
+    float distruction = 15.0f;
 
     float chaseSpeed = 3.0f;
+
+    bool active = false;
+
+    Vector3 temporaryDistance;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         rbody = GetComponent<Rigidbody>();
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("左行く");
+        rbody.linearVelocity = new Vector3(-1, 0, 0);
+
         d3posPlayer = player.transform.position;
         d3posEnemy = transform.position;
 
@@ -35,20 +40,26 @@ public class Enemy3_Controller : MonoBehaviour
 
         distance = Vector2.Distance(d2posPlayer, d2posEnemy);
 
-
-
-        if (distance <= searchRange)
+        if (!active && distance <= searchRange)
         {
-            Vector3 chase = d3posPlayer - d3posEnemy;
-
-            rbody.linearVelocity = chase.normalized * chaseSpeed;
-
+            temporaryDistance = player.transform.position;
             Destroy(gameObject, distruction);
+            active = true;
         }
-
-        else
+        else if (active)
         {
-            rbody.linearVelocity = new Vector3(-1, 0, 0);
+            Vector3 target = (temporaryDistance - d3posEnemy).normalized;
+            rbody.linearVelocity = target * chaseSpeed;
+            Debug.Log(target);
+            if (temporaryDistance.x <= 1)
+            {
+                Invoke("Inactive", 5.0f);
+            }
         }
+    }
+
+    void Inactive()
+    {
+        active = false;
     }
 }
