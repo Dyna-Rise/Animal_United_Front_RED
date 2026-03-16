@@ -654,16 +654,28 @@ PrefabInstance:
       value: Player3
       objectReference: {fileID: 0}
     - target: {fileID: 2806446469280219204, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
+      propertyPath: hoverTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806446469280219204, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
       propertyPath: hoverUpPower
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2806446469280219204, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
       propertyPath: hoverUpCoolTime
-      value: 1.5
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806446469280219204, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
+      propertyPath: hoverUpMaxPower
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2806446469280219204, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
       propertyPath: hoverGravityScale
       value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806446469280219204, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
+      propertyPath: hoverAccelerationTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5908792267604754200, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
       propertyPath: m_NotificationBehavior
