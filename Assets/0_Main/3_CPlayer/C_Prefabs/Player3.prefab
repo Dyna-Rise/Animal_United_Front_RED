@@ -206,6 +206,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   guradPrefab: {fileID: 9178536763576770415, guid: 6d70828d4796d504182e8a9841186df9, type: 3}
   gate: {fileID: 4230823069707019456}
+  hoverGravityScale: 0.05
+  hoverUpPower: 1
+  hoverUpMaxPower: 5
+  hoverUpTime: 0
+  hoverAccelerationTime: 1
+  hoverTime: 0
+  maxHoverTime: 1.5
 --- !u!1 &4230823069707019456
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +238,7 @@ Transform:
   m_GameObject: {fileID: 4230823069707019456}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.77, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
