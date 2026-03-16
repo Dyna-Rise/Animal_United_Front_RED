@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class Enemy1 : MonoBehaviour
 {
     public float speed = 15f;
     public bool isToRight = false;
@@ -41,7 +41,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
             }
         }
     }
-    private void OnTriggerExit(Collision other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == 6)
         {
@@ -52,6 +52,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
             transform.position = new Vector2(1, 1);
         }
     }
+
     void FixedUpdate()
     {
         if (onGround)

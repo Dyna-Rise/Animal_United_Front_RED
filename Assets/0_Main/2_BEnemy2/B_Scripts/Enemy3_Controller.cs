@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Enemy3_Controller : MonoBehaviour
 {
+    public int life;
     GameObject player;
     float distance;
     float searchRange = 5.0f;
