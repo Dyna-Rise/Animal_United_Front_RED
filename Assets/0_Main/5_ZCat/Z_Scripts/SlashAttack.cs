@@ -86,7 +86,7 @@ public class SlashAttack : MonoBehaviour
 
         // プレイヤーの最後の向きを取得
         float playerFacingDirectionX = playerMove.LastInputDirection;
-        Debug.Log(playerMove.LastInputDirection);
+        //Debug.Log(playerMove.LastInputDirection);
 
         // 攻撃エフェクトの生成位置を計算
         Vector3 spawnOffset = slashOffsets[stageIndex];

@@ -167,4 +167,9 @@ public class PlayerMove : MonoBehaviour
     {
         playerSpeed = initialSpeed;
     }
+
+    public void SetMoveDirectionY(float yValue)
+    {
+        moveDirection.y = yValue;
+    }
 }
