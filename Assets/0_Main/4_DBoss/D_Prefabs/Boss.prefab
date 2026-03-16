@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4917599867559172958}
   - component: {fileID: 5113796256259507960}
+  - component: {fileID: 6616867808369226225}
+  - component: {fileID: 8006217140683273730}
+  - component: {fileID: 6386746561326928742}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -48,12 +51,78 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 1.75
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6616867808369226225
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025127584785177476}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &8006217140683273730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025127584785177476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba335746297aab4e9b2332e367440fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  hp: 10
+  bodyObject: {fileID: 7928121638000556970}
+  invincibilityDuration: 1
+  moveSpeed: 2
+  dropSpeed: 4.5
+  minXCoordinate: -5
+  maxXCoordinate: 5
+  startPos: {x: 0, y: 0, z: 0}
+  attackRange: 10
+  bossShotSpeed: 5
+  waitTimeAfterAttack: 1
+  bossSlashPrefab: {fileID: 4234957863503650788, guid: f53c97cebac1ba249bc21e73e293cdd0, type: 3}
+  bossShotPrefab: {fileID: 1595551310247498842, guid: 1eddc5f20ccbfe34283382bbab032c35, type: 3}
+  offScreenFlag: 1
+  distanceToPlayer: 0
+--- !u!114 &6386746561326928742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025127584785177476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a155b795cf349745994364bf50adcd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossShotAutoDestroy
 --- !u!1 &7928121638000556970
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +135,7 @@ GameObject:
   - component: {fileID: 1851221951631271225}
   - component: {fileID: 4050872499994986503}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
