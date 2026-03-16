@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8925096218507676943, guid: 748e064f4cef3c54e89f5c58f16474f5, type: 3}
+      propertyPath: m_Constraints
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 9007534140526201641, guid: 748e064f4cef3c54e89f5c58f16474f5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -713,6 +717,14 @@ PrefabInstance:
     - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
       propertyPath: dropSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
+      propertyPath: startPos.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
+      propertyPath: attackRange
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
       propertyPath: bossShotPrefab
