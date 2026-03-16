@@ -7,7 +7,13 @@ using static UnityEngine.GraphicsBuffer;
 
 public class BossController : MonoBehaviour
 {
+    // --- ダメージ関連の変数 ---
     public int hp = 10;     // ボスの体力
+    public GameObject bodyObject;   // インスペクターから子オブジェクトの"Body"をドラッグするか、Startで自動取得
+    private float damageTimer = 0f; // ダメージタイマー
+    private bool isInvincible = false; // ダメージ中（無敵）フラグ
+    public float invincibilityDuration = 1.0f; // 無敵時間（秒）
+
     public float attackRange = 5.0f;  // 攻撃してくる距離
     public float moveSpeed = 2.0f;   // Lerpの係数
     public float distance;         // PlayerとBossの距離
@@ -15,10 +21,6 @@ public class BossController : MonoBehaviour
     public float minXCoordinate = -5.0f;
     public float maxXCoordinate = 5.0f;
     private float waitTimeAfterAttack = 1.0f; // 攻撃後の隙
-    // 横移動のX軸の限界
-    const int MinLane = -2;
-    const int MaxLane = 2;
-    const float LaneWidth = 2.0f;
 
     // 落下ポイントのX座標リスト（例：5箇所）
     float[] dropPoints = { -4f, -2f, 0f, 2f, 4f };
@@ -51,19 +53,35 @@ public class BossController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ダメージ中は点滅処理
-        if (inDamage)
+        // --- ダメージ・点滅処理 ---
+        if (damageTimer > 0)
         {
-            float val = Mathf.Sin(Time.time * 50);
-            if (val > 0)
-            {
-                gameObject.GetComponent<SpriteRenderer>().enabled = true;
-            }
-            else
-            {
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            }
+            damageTimer -= Time.deltaTime;
+
+            // Sin波を使って点滅 (Time.timeの代わりにdamageTimerを使うと、ダメージの終わりに合わせて点滅します)
+            // 数値「50」を大きくすると点滅が速くなります
+            bool isActive = Mathf.Sin(damageTimer * 50f) > 0;
+            if (bodyObject != null) bodyObject.SetActive(isActive);
         }
+        // タイマーが0になった瞬間
+        else if (isInvincible)
+        {
+            if (bodyObject != null) bodyObject.SetActive(true); // 確実に表示させる
+            isInvincible = false; // 無敵フラグOFF
+        }
+        //    // ダメージ中は点滅処理
+        //    if (inDamage)
+        //{
+        //    float val = Mathf.Sin(Time.time * 50);
+        //    if (val > 0)
+        //    {
+        //        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        //    }
+        //    else
+        //    {
+        //        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        //    }
+        //}
         // 体力が残っている場合
         if (hp > 0)
         {
@@ -114,7 +132,7 @@ public class BossController : MonoBehaviour
     IEnumerator RunawayCol()
     {
         // 帰還・待機時のスピード（少しゆっくり）
-        moveSpeed = 5.0f;
+        moveSpeed = 2.0f;
 
         // 次の出現位置をランダムに決めて画面外で待機
         targetPosition = new Vector3(transform.position.x, startPos.y, 0);
@@ -189,7 +207,8 @@ public class BossController : MonoBehaviour
         }
         else
         {
-            BossShotAttack();
+            if (hp >= 5) BossShotAttack();
+            else BossShotAttack3Way();
         }
 
         yield return new WaitForSeconds(waitTimeAfterAttack);
@@ -283,23 +302,57 @@ public class BossController : MonoBehaviour
         //surpriseAttackCoroutine = null;
     }
 
-    void OnCollisionEnter(Collision other)
+    //void OnCollisionEnter(Collision other)
+    //{
+    //    // ダメージ中でない時の処理
+    //    if (!inDamage)
+    //    {
+    //        // PlayerAttackタグを持つオブジェクトに当たったらダメージ
+    //        if (other.gameObject.tag == "PlayerAttack")
+    //        {
+    //            Debug.Log("プレイヤーの攻撃がボスにヒット！");
+    //        }
+    //        // 体力がなくなったら死亡
+    //        if (hp <= 0)
+    //        {
+
+    //        }
+    //    }
+
+    //}
+
+    private void OnTriggerEnter(Collider other)
     {
-        // ダメージ中でない時の処理
-        if (!inDamage)
+        Debug.Log("OnTriggerEnter発動");
+        // 条件：タグが"PlayerAttack" かつ 無敵中でない かつ 生存している
+        if (other.gameObject.tag == "PlayerAttack" && !isInvincible && hp > 0)
+            Debug.Log("if文の中に入った");
         {
-            // PlayerAttackタグを持つオブジェクトに当たったらダメージ
-            if (other.gameObject.tag == "PlayerAttack")
-            {
-                Debug.Log("プレイヤーの攻撃がボスにヒット！");
-            }
-            // 体力がなくなったら死亡
-            if (hp <= 0)
-            {
-
-            }
+            TakeDamage(1); // 1ダメージ受ける
         }
+    }
 
+    void TakeDamage(int amount)
+    {
+        hp -= amount;
+        damageTimer = invincibilityDuration; // タイマーセット
+        isInvincible = true; // 無敵フラグON
+
+        Debug.Log("ボスがダメージを受けた！ 残りHP: " + hp);
+
+        if (hp <= 0)
+        {
+            BossDie();
+        }
+    }
+
+    void BossDie()
+    {
+        Debug.Log("ボス倒れた");
+        // 死亡演出（爆発エフェクトやオブジェクト削除など）をここに書く
+        StopAllCoroutines();
+        if (bodyObject != null) bodyObject.SetActive(false);
+        Destroy(gameObject, 1.0f); // 1秒後に消す場合など
     }
 
     // 近接攻撃メソッド
@@ -336,28 +389,67 @@ public class BossController : MonoBehaviour
         Rigidbody rb = shot.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.AddForce(shootDir * 500f);
+            // 重力OFFが前提。Unity 6方式で速度セット
+            rb.linearVelocity = shootDir * bossShotSpeed;
         }
         Debug.Log("BossShot生成");
+
+        // ★これを追加：5秒もあれば画面外へ出ているはずなので、確実に消す
+        Destroy(shot, 5.0f);
+
+        Debug.Log("BossShot生成：5秒後に自動消滅予約");
+    }
+
+    // ショット攻撃メソッド（3股版）
+    void BossShotAttack3Way()
+    {
+        // 1. プレイヤーへの基本の角度（ラジアン）を取得
+        float baseRad = GetAngleToPlayer();
+
+        // 2. 3つの角度を配列に用意する（度数法で考えるのが直感的）
+        // 中心(0度)、右に20度、左に20度ずらす例
+        float[] shotAngles = { 0f, 20f, -20f };
+
+        foreach (float angleOffset in shotAngles)
+        {
+            // --- 角度の計算 ---
+            // 基本のラジアンに、ズレ（度）をラジアンに変換して足す
+            float shotRad = baseRad + (angleOffset * Mathf.Deg2Rad);
+
+            // 方向ベクトルを作成
+            Vector3 shootDir = new Vector3(Mathf.Cos(shotRad), Mathf.Sin(shotRad), 0).normalized;
+
+            // --- 生成と設定 ---
+            Vector3 spawnPos = transform.position + shootDir * 1.0f;
+
+            // 進行方向を向かせて生成
+            Quaternion rotation = Quaternion.FromToRotation(Vector3.right, shootDir);
+            GameObject shot = Instantiate(bossShotPrefab, spawnPos, rotation);
+
+            Rigidbody rb = shot.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                // 重力OFFが前提。Unity 6方式で速度セット
+                rb.linearVelocity = shootDir * bossShotSpeed;
+            }
+
+            // 前に決めた「自動消滅」も忘れずに
+            Destroy(shot, 5.0f);
+        }
+
+        Debug.Log("3股ショット発射！");
     }
 
     // プレイヤーへの角度（ラジアン）を取得する共通処理
     float GetAngleToPlayer()
     {
-        Debug.Log("PlayerのtransformPostiion:" + player.transform.position);
-        Debug.Log("BossのtransformPostiion:" + transform.position);
-        // 自分の中心（少し上）からプレイヤーの中心への差分をとる
-        // +1.0f の部分はボスの大きさに合わせて調整してください
-        //Vector3 myCenter = transform.position + Vector3.up * 1.0f;
-        //Vector3 diff = player.transform.position - myCenter;
-        float diffX = player.transform.position.x - transform.position.x;
-        float diffY = player.transform.position.y - transform.position.y;
-
-
-        //diff.z = 0;
+        //Debug.Log("PlayerのtransformPostiion:" + player.transform.position);
+        //Debug.Log("BossのtransformPostiion:" + transform.position);
+        // ターゲット（プレイヤー）と自分（ボス）の座標差
+        Vector3 diff = player.transform.position - transform.position;
 
         // Z軸の差を無視して、XとYだけで角度を出す
-        return Mathf.Atan2(diffY, diffX);
+        return Mathf.Atan2(diff.y, diff.x);
     }
 
     // 落下準備の関数（コルーチンなどの中で呼ぶ）

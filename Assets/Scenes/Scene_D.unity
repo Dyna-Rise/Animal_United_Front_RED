@@ -715,6 +715,10 @@ PrefabInstance:
       value: Boss
       objectReference: {fileID: 0}
     - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
+      propertyPath: hp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
       propertyPath: dropSpeed
       value: 10
       objectReference: {fileID: 0}
