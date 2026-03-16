@@ -1,207 +1,151 @@
 using System.Collections;
-using TMPro;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class BossController : MonoBehaviour
 {
-    // --- ダメージ関連の変数 ---
-    public int hp = 10;     // ボスの体力
-    public GameObject bodyObject;   // インスペクターから子オブジェクトの"Body"をドラッグするか、Startで自動取得
-    private float damageTimer = 0f; // ダメージタイマー
-    private bool isInvincible = false; // ダメージ中（無敵）フラグ
-    public float invincibilityDuration = 1.0f; // 無敵時間（秒）
+    [Header("体力")]
+    public int hp = 10;
+    public GameObject bodyObject;   // 子オブジェクトの"Body"
+    public float invincibilityDuration = 1.0f; // ダメージ後の無敵時間
 
-    public float attackRange = 5.0f;  // 攻撃してくる距離
-    public float moveSpeed = 2.0f;   // Lerpの係数
-    public float distance;         // PlayerとBossの距離
-    //public Vector3 moveRangeX = new Vector3(-5f, 5f, 0f); // 出現するX範囲
-    public float minXCoordinate = -5.0f;
-    public float maxXCoordinate = 5.0f;
-    private float waitTimeAfterAttack = 1.0f; // 攻撃後の隙
+    [Header("移動")]
+    public float moveSpeed = 2.0f;       // 基本の移動速度
+    public float dropSpeed = 4.5f;       // 急襲時の落下速度
+    public float minXCoordinate = -5.0f; // 移動範囲（左端）
+    public float maxXCoordinate = 5.0f;  // 移動範囲（右端）
+    public Vector3 startPos;             // 画面外の待機・帰還位置
 
-    // 落下ポイントのX座標リスト（例：5箇所）
-    float[] dropPoints = { -4f, -2f, 0f, 2f, 4f };
+    [Header("攻撃")]
+    public float attackRange = 5.0f;     // 攻撃に切り替わる距離
+    public float bossShotSpeed = 5.0f;   // 弾の速度
+    public float waitTimeAfterAttack = 1.0f; // 攻撃後の硬直時間
 
-    public float dropSpeed;   // Bossが落ちてくる速さ
+    [Header("プレハブ")]
+    public GameObject bossSlashPrefab;   // 近接攻撃のプレハブ
+    public GameObject bossShotPrefab;    // 遠距離攻撃のプレハブ
 
-    public GameObject bossSlashPrefab;          // 近接攻撃のオブジェクト
-    public GameObject bossShotPrefab;           // 遠距離攻撃のオブジェクト
-
-    public float bossShotSpeed = 5.0f;         // 弾のスピード
-
-    public float bossSlashAttackTime = 0.5f;    // 近接攻撃発生時間
-
-    GameObject player;
-    public bool offScreenFlag = true;       // 画面外フラグ
-    bool inDamage;              // ダメージ中管理フラグ
-    Coroutine runawayCoroutine; // 逃亡コルーチン
-    Coroutine surpriseAttackCoroutine;  // 急襲コルーチン
+    // --- 内部処理用の変数（インスペクターには表示しない） ---
+    private GameObject player;
     private Vector3 targetPosition;
-    public Vector3 startPos; // 画面外の待機位置
+    private float damageTimer = 0f;
+    private bool isInvincible = false;
+    private Coroutine runawayCoroutine;
+    private Coroutine surpriseAttackCoroutine;
+
+    [Header("Debug Info")] // 動作確認用にインスペクターで見れるようにしておく
+    public bool offScreenFlag = true;
+    public float distanceToPlayer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        //startPos = transform.position;
         targetPosition = startPos;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // --- ダメージ・点滅処理 ---
-        if (damageTimer > 0)
-        {
-            damageTimer -= Time.deltaTime;
+        HandleDamageFlashing();
 
-            // Sin波を使って点滅 (Time.timeの代わりにdamageTimerを使うと、ダメージの終わりに合わせて点滅します)
-            // 数値「50」を大きくすると点滅が速くなります
-            bool isActive = Mathf.Sin(damageTimer * 50f) > 0;
-            if (bodyObject != null) bodyObject.SetActive(isActive);
-        }
-        // タイマーが0になった瞬間
-        else if (isInvincible)
+        if (hp > 0 && player != null)
         {
-            if (bodyObject != null) bodyObject.SetActive(true); // 確実に表示させる
-            isInvincible = false; // 無敵フラグOFF
-        }
-        //    // ダメージ中は点滅処理
-        //    if (inDamage)
-        //{
-        //    float val = Mathf.Sin(Time.time * 50);
-        //    if (val > 0)
-        //    {
-        //        gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        //    }
-        //    else
-        //    {
-        //        gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        //    }
-        //}
-        // 体力が残っている場合
-        if (hp > 0)
-        {
-            if (player != null)
+            distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+            // ① 画面外へ逃亡中
+            if (offScreenFlag && runawayCoroutine == null)
             {
-                Vector3 playerPos = player.transform.position;  // その時のPlayerの位置
-                distance = Vector3.Distance(transform.position, playerPos);   // PlayerとBossの距離の差
-
-                // ①外フラグがON かつ 逃亡コルーチン null→逃亡コルーチンの開始
-                if (offScreenFlag == true && runawayCoroutine == null)
-                {
-                    runawayCoroutine = StartCoroutine(RunawayCol());
-                }
-
-                // ②外フラグがON かつ 逃亡コルーチンあり⇒毎フレーム Vector3.Lerpなどで逃亡地点に向けて逃げていく
-                else if (offScreenFlag == true && runawayCoroutine != null)
-                {
-
-                    // 逃亡地点に逃げる
-                    transform.position = Vector3.Lerp(
-                        transform.position,
-                        targetPosition,
-                        Time.deltaTime * moveSpeed
-                        );
-                }
-
-                // ③外フラグがOFF 急襲コルーチン null→急襲コルーチンの開始
-                if (offScreenFlag == false && surpriseAttackCoroutine == null)
-                {
-                    surpriseAttackCoroutine = StartCoroutine(SurpriseAttackCol());
-                }
-
-                // ④外フラグがOFF かつ 急襲コルーチンあり毎フレームVector3.Lerpなどで急襲地点に向けてやってくる
-                if (offScreenFlag == false && surpriseAttackCoroutine != null)
-                {
-                    // 急襲地点にやってくる
-                    transform.position = Vector3.Lerp(
-                        transform.position,
-                        targetPosition,
-                        Time.deltaTime * moveSpeed
-                        );
-                }
+                runawayCoroutine = StartCoroutine(RunawayCol());
+            }
+            // ② 画面外へ移動中の座標更新
+            else if (offScreenFlag && runawayCoroutine != null)
+            {
+                MoveTowardsTarget();
+            }
+            // ③ 急襲準備
+            if (!offScreenFlag && surpriseAttackCoroutine == null)
+            {
+                surpriseAttackCoroutine = StartCoroutine(SurpriseAttackCol());
+            }
+            // ④ 急襲中の座標更新
+            else if (!offScreenFlag && surpriseAttackCoroutine != null)
+            {
+                MoveTowardsTarget();
             }
         }
     }
 
-    // 逃亡コルーチン
+
+    // 移動処理の共通化
+    void MoveTowardsTarget()
+    {
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
+    }
+
+    // 点滅処理の分離
+    void HandleDamageFlashing()
+    {
+        if (damageTimer > 0)
+        {
+            damageTimer -= Time.deltaTime;
+            bool isActive = Mathf.Sin(damageTimer * 50f) > 0;
+            if (bodyObject != null) bodyObject.SetActive(isActive);
+        }
+        else if (isInvincible)
+        {
+            if (bodyObject != null) bodyObject.SetActive(true);
+            isInvincible = false;
+        }
+    }
+
     IEnumerator RunawayCol()
     {
-        // 帰還・待機時のスピード（少しゆっくり）
-        moveSpeed = 2.0f;
-
-        // 次の出現位置をランダムに決めて画面外で待機
+        moveSpeed = 2.0f; // 帰還はゆっくり
         targetPosition = new Vector3(transform.position.x, startPos.y, 0);
 
-        // 画面外にほぼ到達するまで待つ（Lerpでの移動を待つ）
         while (Vector3.Distance(transform.position, targetPosition) > 0.5f)
         {
             yield return null;
         }
 
-        // 画面外で少し待機
         yield return new WaitForSeconds(2.0f);
-
-        offScreenFlag = false; // 出撃準備完了
+        offScreenFlag = false;
         runawayCoroutine = null;
     }
 
-    // 急襲コルーチン
     IEnumerator SurpriseAttackCol()
     {
         if (player == null) yield break;
 
-        // --- 1. 落下地点（X座標）を先に決める ---
+        // 1. 落下地点の決定
         float totalWidth = maxXCoordinate - minXCoordinate;
         float sectorWidth = totalWidth / 5.0f;
         int randomSector = Random.Range(0, 5);
         float targetX = minXCoordinate + (sectorWidth * randomSector) + (sectorWidth / 2.0f);
 
-        float spawnY = startPos.y;  // 逃げ切った高さと同じ
-        transform.position = new Vector3(targetX, spawnY, 0);
-        targetPosition = transform.position; // UpdateのLerpで戻らないように同期
+        transform.position = new Vector3(targetX, startPos.y, 0);
+        targetPosition = transform.position;
 
-        yield return new WaitForSeconds(0.5f); // 落下前のタメ（少し間を置く）
+        yield return new WaitForSeconds(0.5f);
 
-        // --- 2. 落下先のターゲットを設定 ---
-        //float targetY = player.transform.position.y + 1.0f;
-        //targetPosition = new Vector3(targetX, targetY, 0);
-        // プレイヤーの今の高さ（足元）を取得
+        // 2. 落下ターゲット（高さ）の決定
         float playerY = player.transform.position.y;
+        float groundY = 0f;
+        float targetY = Random.Range(playerY + 2.0f, groundY + 3.5f);
 
-        // プレイヤーの現在の高さに関わらず、ステージの「床」を基準にした固定の範囲で決める
-        float groundY = 0f; // 地面の高さが0の場合
-        float minY = playerY + 2.0f; // 下限：地面から2メートル（プレイヤーの頭上）
-        float maxY = groundY + 3.5f; // 上限：プレイヤーがジャンプした時の高さ（定数で指定、3.5fくらい）
-
-        //// 下限：プレイヤーの頭上（例：プレイヤーの背が高いなら+2.0fくらい）
-        //// 上限：プレイヤーがジャンプした時の高さ（例：現在の高さ+3.5fくらい）
-        //float minY = playerY + 2.0f;
-        //float maxY = playerY + 3.5f;
-
-        float targetY = Random.Range(minY, maxY);
         targetPosition = new Vector3(targetX, targetY, 0);
+        moveSpeed = dropSpeed;
 
-        moveSpeed = 4.5f; // 落下速度
-
-        // --- 3. 目的地（落下の終点）に到着するまで待機 ---
-        // これを入れないと、空中にいる間に攻撃処理が走ってしまいます
+        // 3. 到着待ち
         while (Vector3.Distance(transform.position, targetPosition) > 0.5f)
         {
             yield return null;
         }
 
-        // ★ここを追加：着地してから攻撃するまでの「驚き」の時間★
-        // 0.3〜0.7秒くらいが、プレイヤーが反応できる「ちょうどいい隙」になります
         yield return new WaitForSeconds(0.85f);
 
-        // --- 4. 到着したので攻撃を実行 ---
-        float dist = Vector3.Distance(transform.position, player.transform.position);
-        if (dist <= attackRange)
+        // 4. 攻撃実行
+        if (distanceToPlayer <= attackRange)
         {
             BossSlashAttack();
         }
@@ -213,282 +157,88 @@ public class BossController : MonoBehaviour
 
         yield return new WaitForSeconds(waitTimeAfterAttack);
 
-        // --- 5. 帰還（ここでもLerpで帰っていく） ---
+        // 5. 帰還準備
         targetPosition = new Vector3(transform.position.x, startPos.y, 0);
         offScreenFlag = true;
         surpriseAttackCoroutine = null;
-
-        //// --- 2. 画面外の上空に「瞬時に」移動させる ---
-        //float targetY = player.transform.position.y + 1.0f;
-        //Vector3 warpPos = new Vector3(targetX, spawnY, 0);  // 現在地をワープさせる
-        //transform.position = new Vector3(targetX, spawnY, 0);
-
-        //// --- 3. 落下先のターゲットを設定する ---
-        //// 真下に落としたいので、Xは変えずにYだけプレイヤーの高さ付近にする
-        //float targetY = player.transform.position.y + 1.0f; // 攻撃を繰り出す高さ
-        //targetPosition = warpPos;     // ★重要：Update側の目的地もワープ先に合わせる★
-
-        //// --- 4. 落下スピードを上げる ---
-        //moveSpeed = 15.0f; // 急降下なので速めに設定
-
-        //// 移動（落下）が完了するまで少し待つ
-        //// もし移動にUpdate文のMoveTowards等を使っているなら、距離が縮まるのを待つのもアリです
-        //yield return new WaitForSeconds(0.6f);
-
-        // --- 急襲時のスピード（素早く！） ---
-        //moveSpeed = 10.0f;
-
-        //// 画面内を5分割してランダムな位置をターゲットにする
-        //float totalWidth = moveRangeX.y - moveRangeX.x; // 全体の横幅
-        //float sectorWidth = totalWidth / 5.0f;          // 1エリアあたりの幅
-        //int randomSector = Random.Range(0, 5);          // 0〜4のインデックスを抽選
-
-        //// エリアの左端 ＋ エリアの半分 ＝ エエリアの中心座標
-        //float targetX = moveRangeX.x + (sectorWidth * randomSector) + (sectorWidth / 2.0f);
-
-        //// Y座標は「画面内の高さ（例: 2.0f）」など固定値、またはプレイヤーの高さ付近に設定
-        ////float targetY = 2.0f;
-        //float targetY = player.transform.position.y + Random.Range(0, 3);
-
-        //targetPosition = new Vector3(targetX, targetY, 0);
-
-        //// 移動完了の時間を見積もって待つ (スピードを速めたので、待機時間も少し短く調整する)
-        //yield return new WaitForSeconds(0.8f);
-
-        //// プレイヤーの頭上あたりをターゲットにする
-        //targetPosition = new Vector3(
-        //    player.transform.position.x,
-        //    player.transform.position.y + 2.0f,
-        //    0
-        //    );
-
-        // 移動完了を待つ（距離が十分縮まるまで、あるいは一定時間）
-        //yield return new WaitForSeconds(1.5f);
-
-        //// 攻撃判断
-        //float dist = Vector3.Distance(transform.position, player.transform.position);
-        //if (dist <= attackRange)
-        //{
-        //    BossSlashAttack();  // 近接攻撃メソッド
-        //}
-        //else
-        //{
-        //    BossShotAttack();   // ショット攻撃メソッド
-        //}
-
-        //yield return new WaitForSeconds(waitTimeAfterAttack); // 攻撃後の隙
-
-        //// --- 6. 帰還 ---
-        //targetPosition = startPos; // 帰還準備
-        //offScreenFlag = true;
-        //surpriseAttackCoroutine = null;
-
-        //yield return new WaitForSeconds(3.0f);
-        //// 近接攻撃かショットか
-        //if (distance <= range)
-        //{
-        //    // 近接攻撃
-        //    BossSlashAttack();
-        //}
-        //else
-        //{
-        //    // ショット
-        //    BossShotAttack();
-        //}
-        //// 一定時間待つ (攻撃後の隙)
-        //yield return new WaitForSeconds(3.0f);
-        //// 外フラグON、急襲コルーチンの解除
-        //offScreenFlag = true;
-        //surpriseAttackCoroutine = null;
     }
-
-    //void OnCollisionEnter(Collision other)
-    //{
-    //    // ダメージ中でない時の処理
-    //    if (!inDamage)
-    //    {
-    //        // PlayerAttackタグを持つオブジェクトに当たったらダメージ
-    //        if (other.gameObject.tag == "PlayerAttack")
-    //        {
-    //            Debug.Log("プレイヤーの攻撃がボスにヒット！");
-    //        }
-    //        // 体力がなくなったら死亡
-    //        if (hp <= 0)
-    //        {
-
-    //        }
-    //    }
-
-    //}
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter発動");
-        // 条件：タグが"PlayerAttack" かつ 無敵中でない かつ 生存している
-        if (other.gameObject.tag == "PlayerAttack" && !isInvincible && hp > 0)
-            Debug.Log("if文の中に入った");
+        if (other.CompareTag("PlayerAttack") && !isInvincible && hp > 0)
         {
-            TakeDamage(1); // 1ダメージ受ける
+            TakeDamage(1);
         }
     }
 
     void TakeDamage(int amount)
     {
         hp -= amount;
-        damageTimer = invincibilityDuration; // タイマーセット
-        isInvincible = true; // 無敵フラグON
+        damageTimer = invincibilityDuration;
+        isInvincible = true;
 
-        Debug.Log("ボスがダメージを受けた！ 残りHP: " + hp);
-
-        if (hp <= 0)
-        {
-            BossDie();
-        }
+        if (hp <= 0) BossDie();
     }
 
     void BossDie()
     {
-        Debug.Log("ボス倒れた");
-        // 死亡演出（爆発エフェクトやオブジェクト削除など）をここに書く
         StopAllCoroutines();
         if (bodyObject != null) bodyObject.SetActive(false);
-        Destroy(gameObject, 1.0f); // 1秒後に消す場合など
+        Destroy(gameObject, 1.0f);
     }
 
-    // 近接攻撃メソッド
     void BossSlashAttack()
     {
         float rad = GetAngleToPlayer();
-        float deg = rad * Mathf.Rad2Deg;
-
-        // 生成位置：本体からプレイヤー方向に少しオフセット（Sin/Cosを利用）
         Vector3 spawnPos = transform.position + new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0) * 0.8f;
-
-        // BossSlashを生成（Z軸の向きをプレイヤーに合わせる）
-        GameObject slash = Instantiate(bossSlashPrefab, spawnPos, Quaternion.Euler(0, 0, deg));
-        // ★ここを追加：0.5秒後に消滅させる予約
+        GameObject slash = Instantiate(bossSlashPrefab, spawnPos, Quaternion.Euler(0, 0, rad * Mathf.Rad2Deg));
         Destroy(slash, 0.5f);
-
-        Debug.Log("BossSlash生成（0.5秒後に消滅予定）");
     }
 
-    // ショット攻撃メソッド
     void BossShotAttack()
     {
         float rad = GetAngleToPlayer();
-        float deg = rad * Mathf.Rad2Deg;
-
-        Vector3 spawnPos = transform.position + new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
-
-        // BossShotを生成
-        GameObject shot = Instantiate(bossShotPrefab, spawnPos, Quaternion.Euler(0, 0, deg));
-
-        // AddForce用の方向ベクトル（Sin/Cosを利用）
         Vector3 shootDir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0);
+        GameObject shot = Instantiate(bossShotPrefab, transform.position + shootDir, Quaternion.Euler(0, 0, rad * Mathf.Rad2Deg));
 
         Rigidbody rb = shot.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            // 重力OFFが前提。Unity 6方式で速度セット
-            rb.linearVelocity = shootDir * bossShotSpeed;
-        }
-        Debug.Log("BossShot生成");
-
-        // ★これを追加：5秒もあれば画面外へ出ているはずなので、確実に消す
+        if (rb != null) rb.linearVelocity = shootDir * bossShotSpeed;
         Destroy(shot, 5.0f);
-
-        Debug.Log("BossShot生成：5秒後に自動消滅予約");
     }
 
-    // ショット攻撃メソッド（3股版）
     void BossShotAttack3Way()
     {
-        // 1. プレイヤーへの基本の角度（ラジアン）を取得
         float baseRad = GetAngleToPlayer();
-
-        // 2. 3つの角度を配列に用意する（度数法で考えるのが直感的）
-        // 中心(0度)、右に20度、左に20度ずらす例
         float[] shotAngles = { 0f, 20f, -20f };
 
         foreach (float angleOffset in shotAngles)
         {
-            // --- 角度の計算 ---
-            // 基本のラジアンに、ズレ（度）をラジアンに変換して足す
             float shotRad = baseRad + (angleOffset * Mathf.Deg2Rad);
-
-            // 方向ベクトルを作成
             Vector3 shootDir = new Vector3(Mathf.Cos(shotRad), Mathf.Sin(shotRad), 0).normalized;
-
-            // --- 生成と設定 ---
-            Vector3 spawnPos = transform.position + shootDir * 1.0f;
-
-            // 進行方向を向かせて生成
             Quaternion rotation = Quaternion.FromToRotation(Vector3.right, shootDir);
-            GameObject shot = Instantiate(bossShotPrefab, spawnPos, rotation);
+            GameObject shot = Instantiate(bossShotPrefab, transform.position + shootDir, rotation);
 
             Rigidbody rb = shot.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                // 重力OFFが前提。Unity 6方式で速度セット
-                rb.linearVelocity = shootDir * bossShotSpeed;
-            }
-
-            // 前に決めた「自動消滅」も忘れずに
+            if (rb != null) rb.linearVelocity = shootDir * bossShotSpeed;
             Destroy(shot, 5.0f);
         }
-
-        Debug.Log("3股ショット発射！");
     }
 
-    // プレイヤーへの角度（ラジアン）を取得する共通処理
     float GetAngleToPlayer()
     {
-        //Debug.Log("PlayerのtransformPostiion:" + player.transform.position);
-        //Debug.Log("BossのtransformPostiion:" + transform.position);
-        // ターゲット（プレイヤー）と自分（ボス）の座標差
         Vector3 diff = player.transform.position - transform.position;
-
-        // Z軸の差を無視して、XとYだけで角度を出す
         return Mathf.Atan2(diff.y, diff.x);
-    }
-
-    // 落下準備の関数（コルーチンなどの中で呼ぶ）
-    void PrepareDrop()
-    {
-        // 1. ランダムに1つ場所を選ぶ
-        int index = Random.Range(0, dropPoints.Length);
-        float targetX = dropPoints[index];
-
-        // 2. 画面外の上空にパッと配置する
-        // targetYは画面に映らない十分な高さ（例：10）
-        float spawnY = 10f;
-        transform.position = new Vector3(targetX, spawnY, 0);
-
-        // 3. ここで落下のスイッチを入れる（物理演算なら重力を有効にするなど）
-        StartCoroutine(DropRoutine());
-    }
-
-    IEnumerator DropRoutine()
-    {
-        // 例：地面（y=0付近）に着くまで真下に移動させる
-        while (transform.position.y > 0.5f)
-        {
-            transform.Translate(Vector3.down * Time.deltaTime * dropSpeed);
-            yield return null;
-        }
-        // 着地後の処理...
     }
 
     private void OnDrawGizmos()
     {
-        // Sceneビューで攻撃範囲と分割エリアを確認できるようにする
         Gizmos.color = Color.white;
         float totalWidth = maxXCoordinate - minXCoordinate;
         float sectorWidth = totalWidth / 5.0f;
         for (int i = 0; i <= 5; i++)
         {
             float x = minXCoordinate + (sectorWidth * i);
-            Gizmos.DrawLine(new Vector3(x, 10, 0), new Vector3(x, -10, 0));
+            Gizmos.DrawLine(new Vector3(x, 15, 0), new Vector3(x, -5, 0));
         }
     }
 }
