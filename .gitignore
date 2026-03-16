@@ -104,5 +104,8 @@ sysinfo.txt
 Assets/TextMesh Pro
 Assets/Sounds
 Assets/Fonts
+ProjectSettings/EditorBuildSettings.asset
+ProjectSettings/GraphicsSettings.asset
+ProjectSettings/ProjectSettings.asset
 
 UserSettings/
