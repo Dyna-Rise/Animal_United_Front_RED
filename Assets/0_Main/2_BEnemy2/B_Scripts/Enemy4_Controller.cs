@@ -6,68 +6,77 @@ public class Enemy4_Controller : MonoBehaviour
 
     GameObject player;
 
-    GameObject enemyShot;
-    GameObject enemyGuard;
-    GameObject gate;
+    [SerializeField] GameObject enemyShot;
+    [SerializeField] GameObject enemyGuard;
+    Transform gate;
 
     Rigidbody rbody;
 
     Coroutine shot;
-    bool isShoot;
+    bool isShot = false;
 
     Coroutine guard;
     bool isGuard;
 
     float interval = 5.0f;
 
-    float playerDirection;
-    float shotSpeed;
+    //float playerDirection;
+    float shotSpeed = 5.0f;
+
+    Coroutine onAttack;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rbody = enemyShot.GetComponent<Rigidbody>();
-        gate = GameObject.FindGameObjectWithTag("gate");
+        gate = transform.Find("gate");
         enemyGuard = GameObject.FindGameObjectWithTag("EnemyGuard");
 
         enemyGuard.transform.SetParent(transform);
         enemyGuard.SetActive(false);
 
-        StartCoroutine(OnAttack());
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (onAttack == null)
+        {
+            //Debug.Log("コルーチン起動");
+            onAttack = StartCoroutine(OnAttack());
+        }
     }
 
     IEnumerator OnAttack()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
 
-        playerDirection = player.transform.position.x - gameObject.transform.position.x;
-        if (shot != null && isShoot == false)
+        //playerDirection = player.transform.position.x - gameObject.transform.position.x;
+
+        if (guard == null && isShot == false)
         {
-            Instantiate(enemyShot,
+            //Debug.Log("弾を生成");
+          GameObject obj = Instantiate(enemyShot,
                 gate.transform.position,
                 Quaternion.identity);
 
-            if (playerDirection != 0)
-            {
+            rbody = obj.GetComponent<Rigidbody>();
 
-                rbody.AddForce(new Vector3(playerDirection * shotSpeed, 0, 0), ForceMode.Impulse);
+            rbody.AddForce(Vector3.left * shotSpeed, ForceMode.Impulse);
 
-                yield return new WaitForSeconds(interval);
+            //Debug.Log("飛ばす");
 
-                Destroy(enemyShot);
+            yield return new WaitForSeconds(interval);
 
-                isShoot = true;
-                guard = null;
-            }
+            Destroy(obj);
+
+            isShot = true;
+            isGuard = false;
+            guard = null;
+            //Debug.Log("ショット終わり");
+            
         }
 
-        if (guard != null && isGuard == false)
+        if (shot == null && isGuard == false)
         {
             enemyGuard.SetActive(true);
 
@@ -76,8 +85,12 @@ public class Enemy4_Controller : MonoBehaviour
             enemyGuard.SetActive(false);
 
             isGuard = true;
+            isShot = false;
             shot = null;
+            //Debug.Log("ガード終わり");
         }
+
+        onAttack = null;
 
     }
 

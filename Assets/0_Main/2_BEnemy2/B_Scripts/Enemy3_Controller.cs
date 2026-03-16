@@ -10,8 +10,9 @@ public class Enemy3_Controller : MonoBehaviour
     Vector3 d3posEnemy;
 
     Rigidbody rbody;
+    CapsuleCollider capsuleCollider;
 
-    float distruction = 15.0f;
+    float distruction = 5.0f;
 
     float chaseSpeed = 3.0f;
 
@@ -24,12 +25,14 @@ public class Enemy3_Controller : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         rbody = GetComponent<Rigidbody>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+
+        capsuleCollider.isTrigger = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("左行く");
         rbody.linearVelocity = new Vector3(-1, 0, 0);
 
         d3posPlayer = player.transform.position;
@@ -50,11 +53,12 @@ public class Enemy3_Controller : MonoBehaviour
         {
             Vector3 target = (temporaryDistance - d3posEnemy).normalized;
             rbody.linearVelocity = target * chaseSpeed;
-            Debug.Log(target);
-            if (temporaryDistance.x <= 1)
-            {
-                Invoke("Inactive", 5.0f);
-            }
+            
+            //Debug.Log(target);
+            //if (temporaryDistance.x <= 1)
+            //{
+            //    Invoke("Inactive", 5.0f);
+            //}
         }
     }
 

@@ -560,7 +560,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1002346217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -812,6 +812,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyShot
       objectReference: {fileID: 0}
+    - target: {fileID: 5633338145120647573, guid: 17829fb0f0082e745abbc329c299c6e5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -928,7 +932,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1034025999301611747, guid: cc689faa8e67a3e48aa0e7afcebc29e2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.52
       objectReference: {fileID: 0}
     - target: {fileID: 1034025999301611747, guid: cc689faa8e67a3e48aa0e7afcebc29e2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -938,6 +942,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy4
       objectReference: {fileID: 0}
+    - target: {fileID: 5321703830642591352, guid: cc689faa8e67a3e48aa0e7afcebc29e2, type: 3}
+      propertyPath: enemyShot
+      value: 
+      objectReference: {fileID: 5633338145120647573, guid: 17829fb0f0082e745abbc329c299c6e5, type: 3}
+    - target: {fileID: 5321703830642591352, guid: cc689faa8e67a3e48aa0e7afcebc29e2, type: 3}
+      propertyPath: enemyGuard
+      value: 
+      objectReference: {fileID: 2429707371381502013, guid: c3550d044bd09e74d81251b515544601, type: 3}
+    - target: {fileID: 7462441107490566413, guid: cc689faa8e67a3e48aa0e7afcebc29e2, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
