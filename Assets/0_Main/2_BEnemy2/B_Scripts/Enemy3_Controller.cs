@@ -16,9 +16,20 @@ public class Enemy3_Controller : MonoBehaviour
 
     float chaseSpeed = 3.0f;
 
+    float dx;
+    float dy;
+
     bool active = false;
 
     Vector3 temporaryDistance;
+
+    int ground;
+    int enemy3;
+
+    float body;
+
+    float damageCount;
+    bool isDamaged = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,14 +37,18 @@ public class Enemy3_Controller : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         rbody = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
-
-        capsuleCollider.isTrigger = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        ground = LayerMask.NameToLayer("Ground");
+        enemy3 = LayerMask.NameToLayer("Enemy");
+
+        Physics.IgnoreLayerCollision(ground, enemy3, true);
         rbody.linearVelocity = new Vector3(-1, 0, 0);
+
+        //Debug.Log(distance);
 
         d3posPlayer = player.transform.position;
         d3posEnemy = transform.position;
@@ -45,20 +60,19 @@ public class Enemy3_Controller : MonoBehaviour
 
         if (!active && distance <= searchRange)
         {
-            temporaryDistance = player.transform.position;
+             dx = player.transform.position.x - transform.position.x;
+             dy = player.transform.position.y - transform.position.y;
+
             Destroy(gameObject, distruction);
             active = true;
         }
         else if (active)
         {
-            Vector3 target = (temporaryDistance - d3posEnemy).normalized;
-            rbody.linearVelocity = target * chaseSpeed;
-            
-            //Debug.Log(target);
-            //if (temporaryDistance.x <= 1)
-            //{
-            //    Invoke("Inactive", 5.0f);
-            //}
+            float rad = Mathf.Atan2(dx, dy);
+
+            float vx = Mathf.Cos(rad);
+            float vy = Mathf.Sin(rad);
+            rbody.linearVelocity = new Vector3(vx, vy, 0).normalized * chaseSpeed;
         }
     }
 
@@ -66,4 +80,26 @@ public class Enemy3_Controller : MonoBehaviour
     {
         active = false;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == ("PlayerAttack"))
+        {
+            if (damageCount == 0 && isDamaged == false)
+            {
+                life--;
+                damageCount++;
+
+                Invoke("Damaged", 1.0f);
+            }
+        }
+    }
+
+    void Damaged()
+    {
+        isDamaged = true;
+    }
+
+
+    
 }
