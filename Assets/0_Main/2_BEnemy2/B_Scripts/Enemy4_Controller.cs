@@ -6,9 +6,11 @@ public class Enemy4_Controller : MonoBehaviour
 
     GameObject player;
 
-    [SerializeField] GameObject enemyShot;
-    [SerializeField] GameObject enemyGuard;
-    Transform gate;
+    //[SerializeField] GameObject enemyShot;
+    //[SerializeField] GameObject enemyGuard;
+    public GameObject enemyShot;
+    public GameObject enemyGuard;
+    public Transform gate;
 
     Rigidbody rbody;
 
@@ -28,8 +30,8 @@ public class Enemy4_Controller : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gate = transform.Find("gate");
-        enemyGuard = GameObject.FindGameObjectWithTag("EnemyGuard");
+        //gate = transform.Find("gate");
+        //enemyGuard = GameObject.FindGameObjectWithTag("EnemyGuard");
 
         enemyGuard.transform.SetParent(transform);
         enemyGuard.SetActive(false);
@@ -41,7 +43,7 @@ public class Enemy4_Controller : MonoBehaviour
     {
         if (onAttack == null)
         {
-            //Debug.Log("ÉRÉãÅ[É`ÉìãNìÆ");
+            //Debug.Log("„Ç≥„É´„Éº„ÉÅ„É≥Ëµ∑Âãï");
             onAttack = StartCoroutine(OnAttack());
         }
     }
@@ -54,7 +56,7 @@ public class Enemy4_Controller : MonoBehaviour
 
         if (guard == null && isShot == false)
         {
-            //Debug.Log("íeÇê∂ê¨");
+            //Debug.Log("Âºæ„ÇíÁîüÊàê");
           GameObject obj = Instantiate(enemyShot,
                 gate.transform.position,
                 Quaternion.identity);
@@ -63,7 +65,7 @@ public class Enemy4_Controller : MonoBehaviour
 
             rbody.AddForce(Vector3.left * shotSpeed, ForceMode.Impulse);
 
-            //Debug.Log("îÚÇŒÇ∑");
+            //Debug.Log("È£õ„Å∞„Åô");
 
             yield return new WaitForSeconds(interval);
 
@@ -72,7 +74,7 @@ public class Enemy4_Controller : MonoBehaviour
             isShot = true;
             isGuard = false;
             guard = null;
-            //Debug.Log("ÉVÉáÉbÉgèIÇÌÇË");
+            //Debug.Log("„Ç∑„Éß„ÉÉ„ÉàÁµÇ„Çè„Çä");
             
         }
 
@@ -87,7 +89,7 @@ public class Enemy4_Controller : MonoBehaviour
             isGuard = true;
             isShot = false;
             shot = null;
-            //Debug.Log("ÉKÅ[ÉhèIÇÌÇË");
+            //Debug.Log("„Ç¨„Éº„ÉâÁµÇ„Çè„Çä");
         }
 
         onAttack = null;
