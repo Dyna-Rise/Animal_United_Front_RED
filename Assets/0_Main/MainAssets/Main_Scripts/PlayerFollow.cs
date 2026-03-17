@@ -11,6 +11,15 @@ public class PlayerFollow : MonoBehaviour
 
     void Update()
     {
-        transform.position = player.transform.position;
+        if(player != null)
+        {
+            transform.position = player.transform.position;
+        }
+    }
+
+    public void TargetReset()
+    {
+        //対象を取りなおし
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 }

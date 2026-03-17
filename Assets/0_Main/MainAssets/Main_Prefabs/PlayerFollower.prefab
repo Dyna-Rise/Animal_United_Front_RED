@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 23019578711614395}
   - component: {fileID: 6758783470637717232}
+  - component: {fileID: 9036136464985580776}
   m_Layer: 0
   m_Name: PlayerFollower
   m_TagString: PlayerFollower
@@ -44,3 +45,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e047b4836d2e20344b5176e6a0a779e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &9036136464985580776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894233331615368300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8092d7dffe1daf8438bdd43ea4d996b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerChanger
+  player2TimeMax: 15
+  player3TimeMax: 15
+  defaultPlayer: {fileID: 0}
+  changePlayers:
+  - {fileID: 0}
+  - {fileID: 0}
+  changeEffect: {fileID: 6488590089204706865, guid: 7c1c5e6456896094e824e1f4fae58f29, type: 3}
+  isPlayer2: 0
+  isPlayer3: 0

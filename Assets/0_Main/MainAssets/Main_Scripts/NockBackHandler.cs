@@ -12,6 +12,12 @@ public class KnockbackHandler : MonoBehaviour
     public float knockbackForce = 10f;
     public float knockbackDuration = 0.3f;
 
+    [Header("無敵時間・点滅対象")]
+    public float invincibilityTime = 1.5f;
+    public GameObject targetBody;
+
+    bool isInvinciblility; //無敵フラグ
+
     Vector3 knockbackDirection;   // ノックバック方向
     Coroutine knockBackCoroutine;   // ノックバックコルーチン
 
@@ -25,8 +31,13 @@ public class KnockbackHandler : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         //フラグがない時、Enemyに触れたら
-        if (other.CompareTag("Enemy") && knockBackCoroutine == null)
+        if (other.CompareTag("Enemy") && knockBackCoroutine == null && !isInvinciblility)
         {
+            GameManager.playerLife--;
+            if(GameManager.playerLife <= 0)
+            {
+                GameManager.gameState = GameState.gameover;
+            }
             // 敵との接触位置からノックバック方向を計算
             knockbackDirection = (transform.position - other.transform.position).normalized;
 
@@ -34,7 +45,8 @@ public class KnockbackHandler : MonoBehaviour
             knockbackDirection.y = 0.5f;
             knockbackDirection.Normalize(); // 再び正規化
 
-            StartKnockback();　//ノックバックの開始
+            StartKnockback(); //ノックバックの開始
+            StartCoroutine(Invincibility()); //無敵時間の開始
         }
     }
 
@@ -50,29 +62,36 @@ public class KnockbackHandler : MonoBehaviour
 
             controller.Move((currentMove + finalKnockbackVelocity) * Time.deltaTime);
         }
+
+        if (isInvinciblility)
+        {
+            float val = Mathf.Sin(Time.time * 50);
+            if (val > 0) targetBody.SetActive(true);
+            else targetBody.SetActive(false);
+        }
     }
 
     //ノックバック
     void StartKnockback()
     {
-
         playerMove.DisableMoveInput();
         playerDash.StopDash();
-
         knockBackCoroutine = StartCoroutine(KnockbackRoutine()); //ノックバックの開始
     }
 
     IEnumerator KnockbackRoutine()
     {
-        //float timer = 0f;
-        //while (timer < knockbackDuration)
-        //{
-        //    timer += Time.deltaTime;
-        //    yield return null;
-        //}
         yield return new WaitForSeconds(knockbackDuration);
         playerMove.EnableMoveInput();
         knockBackCoroutine = null;
+    }
+
+    IEnumerator Invincibility()
+    {
+        isInvinciblility = true;
+        yield return new WaitForSeconds(invincibilityTime);
+        isInvinciblility = false;
+        targetBody.SetActive(true);
     }
 
 }

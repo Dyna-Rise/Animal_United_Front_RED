@@ -27,6 +27,8 @@ public class PlayerMove : MonoBehaviour
 
     bool canMoveInput = true; // 移動入力受付フラグ
 
+    PlayerChanger playerChanger; //切り替えプログラム
+
     //moveDirectionのプロパティ（読み取り専用）
     public Vector3 MoveDirection
     {
@@ -43,6 +45,19 @@ public class PlayerMove : MonoBehaviour
         get { return lastInputDirection; }
     }
 
+    //追加
+    public void SetMoveDirectionY(float yValue)
+    {
+        moveDirection.y = yValue;
+    }
+
+    //追加
+    public void SetMoveDirectionX(float xValue)
+    {
+        moveDirection.x = xValue;
+    }
+
+
     //移動ボタンのアクション
     void OnMove(InputValue value)
     {
@@ -54,7 +69,7 @@ public class PlayerMove : MonoBehaviour
             if(inputDirection > 0)
             {
                 lastInputDirection = 1;
-                Debug.Log("lastInput:" + lastInputDirection);
+                //Debug.Log("lastInput:" + lastInputDirection);
             }
             else if(inputDirection < 0)
             {
@@ -75,9 +90,45 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    void OnPrevious(InputValue value)
+    {
+        if (!playerChanger.isPlayer3)
+        {
+            if (!playerChanger.isPlayer2)
+            {
+                playerChanger.Player2Change();
+            }
+            else
+            {
+                playerChanger.DefaultPlayerChange();
+            }
+        }
+    }
+
+    void OnNext(InputValue value)
+    {
+        if (!playerChanger.isPlayer2)
+        {
+            if (!playerChanger.isPlayer3)
+            {
+                playerChanger.Player3Change();
+            }
+            else
+            {
+                playerChanger.DefaultPlayerChange();
+            }
+        }
+    }
+
+    public void PositionReset(GameObject target)
+    {
+        transform.position = target.transform.position;
+    }
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        playerChanger = GameObject.FindGameObjectWithTag("PlayerFollower").GetComponent<PlayerChanger>();
         initialSpeed = playerSpeed;
     }
 
@@ -168,8 +219,11 @@ public class PlayerMove : MonoBehaviour
         playerSpeed = initialSpeed;
     }
 
-    public void SetMoveDirectionY(float yValue)
+    void OnTriggerEnter(Collider other)
     {
-        moveDirection.y = yValue;
+        if(other.gameObject.tag == "StageGoal")
+        {
+            GameManager.gameState = GameState.stageclear;
+        }
     }
 }
