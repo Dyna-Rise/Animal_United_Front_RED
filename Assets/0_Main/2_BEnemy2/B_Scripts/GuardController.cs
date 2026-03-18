@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GuardController : MonoBehaviour
 {
-    public bool guarded = false;
+    public bool guarded;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -13,7 +13,7 @@ public class GuardController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        guarded = false;
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -25,5 +25,7 @@ public class GuardController : MonoBehaviour
 
             guarded = true;
         }
+
+        guarded = false;
     }
 }

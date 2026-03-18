@@ -86,9 +86,12 @@ public class Enemy4_Controller : MonoBehaviour
         {
             enemyGuard.SetActive(true);
 
+
             yield return new WaitForSeconds(interval);
 
             enemyGuard.SetActive(false);
+
+
 
             isGuard = true;
             isShot = false;
@@ -102,12 +105,11 @@ public class Enemy4_Controller : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other);
 
         if (other.tag == ("PlayerAttack") && guardC.guarded == false)
         {
             life--;
-            Debug.Log(life);
+            //Debug.Log(life);
 
             if (life <= 0)
             {
