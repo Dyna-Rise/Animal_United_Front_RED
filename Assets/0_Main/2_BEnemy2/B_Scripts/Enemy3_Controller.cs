@@ -13,7 +13,7 @@ public class Enemy3_Controller : MonoBehaviour
     Rigidbody rbody;
     CapsuleCollider capsuleCollider;
 
-    float distruction = 5.0f;
+    float distruction = 10.0f;
 
     float chaseSpeed = 3.0f;
 
@@ -43,6 +43,8 @@ public class Enemy3_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isDamaged = false;
+
         ground = LayerMask.NameToLayer("Ground");
         enemy3 = LayerMask.NameToLayer("Enemy");
 
@@ -61,8 +63,8 @@ public class Enemy3_Controller : MonoBehaviour
 
         if (!active && distance <= searchRange)
         {
-             dx = player.transform.position.x - transform.position.x;
-             dy = player.transform.position.y - transform.position.y;
+            dx = player.transform.position.x - transform.position.x;
+            dy = player.transform.position.y - transform.position.y;
 
             Destroy(gameObject, distruction);
             active = true;
@@ -86,12 +88,22 @@ public class Enemy3_Controller : MonoBehaviour
     {
         if (other.tag == ("PlayerAttack"))
         {
+            damageCount--;
+            if (damageCount < 0) damageCount = 0;
+
             if (damageCount == 0 && isDamaged == false)
             {
                 life--;
                 damageCount++;
 
+                //Debug.Log(life);
+
                 Invoke("Damaged", 1.0f);
+
+                if (life <= 0)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }
@@ -102,5 +114,5 @@ public class Enemy3_Controller : MonoBehaviour
     }
 
 
-    
+
 }

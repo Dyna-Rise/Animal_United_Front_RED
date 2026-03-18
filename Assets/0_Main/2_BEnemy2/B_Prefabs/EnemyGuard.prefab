@@ -100,13 +100,14 @@ GameObject:
   m_Component:
   - component: {fileID: 6980593778837354503}
   - component: {fileID: 9066003017447270506}
+  - component: {fileID: 394434144656608694}
   m_Layer: 0
   m_Name: EnemyGuard
   m_TagString: EnemyGuard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6980593778837354503
 Transform:
   m_ObjectHideFlags: 0
@@ -144,3 +145,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &394434144656608694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2429707371381502013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c1f2bc3b7e72934daf5df9a07eaed26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GuardController
