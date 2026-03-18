@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6386746561326928742}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,6 +105,7 @@ MonoBehaviour:
   minXCoordinate: -5
   maxXCoordinate: 5
   startPos: {x: 0, y: 0, z: 0}
+  floorObject: {fileID: 0}
   attackRange: 10
   bossShotSpeed: 5
   waitTimeAfterAttack: 1
@@ -226,17 +227,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpiderOrange
       objectReference: {fileID: 0}
+    - target: {fileID: 1537008473948126, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 5.75
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 5.75
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 5.75
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalPosition.x

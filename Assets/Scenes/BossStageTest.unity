@@ -795,6 +795,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 5025127584785177476, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 5298283705105324277, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
       propertyPath: topY
       value: 2.5
@@ -807,6 +811,14 @@ PrefabInstance:
       propertyPath: bodyObject
       value: 
       objectReference: {fileID: 1713805982}
+    - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
+      propertyPath: attackRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
+      propertyPath: floorObject
+      value: 
+      objectReference: {fileID: 990392690}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
