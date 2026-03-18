@@ -615,7 +615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 120549012729250549, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.532
       objectReference: {fileID: 0}
     - target: {fileID: 120549012729250549, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -655,7 +655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1092171274751486606, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2806446469280219204, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
       propertyPath: hoverTime
@@ -914,6 +914,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerFollower
       objectReference: {fileID: 0}
+    - target: {fileID: 9036136464985580776, guid: 7a35c768a5a081b42ba34068a728cca4, type: 3}
+      propertyPath: defaultPlayer
+      value: 
+      objectReference: {fileID: 3368461653760202200, guid: 748e064f4cef3c54e89f5c58f16474f5, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -953,7 +957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4382951889173849336, guid: 5cbca844380125547b46ab0a0731547f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4646018522770149937, guid: 5cbca844380125547b46ab0a0731547f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -961,7 +965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4646018522770149937, guid: 5cbca844380125547b46ab0a0731547f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.553
       objectReference: {fileID: 0}
     - target: {fileID: 4646018522770149937, guid: 5cbca844380125547b46ab0a0731547f, type: 3}
       propertyPath: m_LocalPosition.z
