@@ -94,6 +94,7 @@ public class Player3Controller : MonoBehaviour
         }
     }
 
+
     // Gurad開始処理
     void GuradOn()
     {
@@ -104,22 +105,24 @@ public class Player3Controller : MonoBehaviour
                 gate.transform.position,
                 Quaternion.identity
             );
-            GetComponent<Collider>().enabled = false;   // ガード中は本体のコライダーをOFFにする
         }
-        playerMove.enabled = false;     // ガード中は移動処理を止める
-        playerDash.enabled = false;     // ガード中はダッシュ処理を止める
+        controller.enabled = false;
+        GetComponent<Collider>().enabled = false;       // ガード中は本体のコライダーをOFFにする
+        playerMove.enabled = false;                     // ガード中は移動処理を止める
+        playerDash.enabled = false;                     // ガード中はダッシュ処理を止める
     }
 
     // Gurad終了処理
     void GuradOff()
     {
-        if (guradObj != null)           // 念のためGuradオブジェクトがない場合は処理しないようにしておく
+        if (guradObj != null)                           // 念のためGuradオブジェクトがない場合は処理しないようにしておく
         {
             Destroy(guradObj);                          // ボタンを離したらオブジェクトを消去する
-            GetComponent<Collider>().enabled = true;    // 本体のコライダーをONに戻す
-            playerMove.enabled = true;                  // 移動処理を復活
-            playerDash.enabled = true;                  // ダッシュ処理を復活
         }
+        controller.enabled = true;
+        GetComponent<Collider>().enabled = true;        // ガード中は本体のコライダーをOFFにする
+        playerMove.enabled = true;                      // 移動処理を復活
+        playerDash.enabled = true;                      // ダッシュ処理を復活
     }
 
     // Hoveringメイン処理
