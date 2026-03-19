@@ -10,6 +10,8 @@ public class EnemyTestDamage : MonoBehaviour
         {
             life--;
 
+            Debug.Log(life);
+
             if(life <= 0)
             {
                 Destroy(gameObject);

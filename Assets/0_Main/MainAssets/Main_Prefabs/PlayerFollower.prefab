@@ -59,10 +59,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerChanger
   player2TimeMax: 15
   player3TimeMax: 15
-  defaultPlayer: {fileID: 0}
+  defaultPlayer: {fileID: 3368461653760202200, guid: 3238946bb79154d4aa27b82d6ed1934c, type: 3}
   changePlayers:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4382951889173849336, guid: 5cbca844380125547b46ab0a0731547f, type: 3}
+  - {fileID: 1092171274751486606, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
   changeEffect: {fileID: 6488590089204706865, guid: 7c1c5e6456896094e824e1f4fae58f29, type: 3}
   isPlayer2: 0
   isPlayer3: 0
