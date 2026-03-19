@@ -4,12 +4,14 @@ using UnityEngine;
 public class Enemy4_Controller : MonoBehaviour
 {
 
+    public int life;
     GameObject player;
 
     //[SerializeField] GameObject enemyShot;
     //[SerializeField] GameObject enemyGuard;
     public GameObject enemyShot;
     public GameObject enemyGuard;
+    GuardController guardC;
     public Transform gate;
 
     Rigidbody rbody;
@@ -27,12 +29,14 @@ public class Enemy4_Controller : MonoBehaviour
 
     Coroutine onAttack;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //gate = transform.Find("gate");
         //enemyGuard = GameObject.FindGameObjectWithTag("EnemyGuard");
 
+        guardC = GetComponentInChildren<GuardController>();
         enemyGuard.transform.SetParent(transform);
         enemyGuard.SetActive(false);
 
@@ -57,9 +61,9 @@ public class Enemy4_Controller : MonoBehaviour
         if (guard == null && isShot == false)
         {
             //Debug.Log("弾を生成");
-          GameObject obj = Instantiate(enemyShot,
-                gate.transform.position,
-                Quaternion.identity);
+            GameObject obj = Instantiate(enemyShot,
+                  gate.transform.position,
+                  Quaternion.identity);
 
             rbody = obj.GetComponent<Rigidbody>();
 
@@ -75,16 +79,19 @@ public class Enemy4_Controller : MonoBehaviour
             isGuard = false;
             guard = null;
             //Debug.Log("ショット終わり");
-            
+
         }
 
         if (shot == null && isGuard == false)
         {
             enemyGuard.SetActive(true);
 
+
             yield return new WaitForSeconds(interval);
 
             enemyGuard.SetActive(false);
+
+
 
             isGuard = true;
             isShot = false;
@@ -93,6 +100,22 @@ public class Enemy4_Controller : MonoBehaviour
         }
 
         onAttack = null;
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.tag == ("PlayerAttack") && guardC.guarded == false)
+        {
+            life--;
+            //Debug.Log(life);
+
+            if (life <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
 
     }
 
