@@ -77,6 +77,9 @@ MonoBehaviour:
   enemyShot: {fileID: 5633338145120647573, guid: 17829fb0f0082e745abbc329c299c6e5, type: 3}
   enemyGuard: {fileID: 865330592714971712}
   gate: {fileID: 1034025999301611747}
+  stunTime: 0.2
+  damageSpeed: 0.5
+  enemyBody: {fileID: 7363472758267506565}
 --- !u!54 &8832941946958127020
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -219,7 +222,7 @@ Transform:
   m_GameObject: {fileID: 7462441107490566413}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 1.88, z: 0}
+  m_LocalPosition: {x: -0.01, y: 0.45, z: 1.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -580,6 +583,11 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &7363472758267506565 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3039945511842706650, guid: a8dad76864749524aab0a1a35836a409, type: 3}
+  m_PrefabInstance: {fileID: 5476448769289591647}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7625975244004587923 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2725989729914938060, guid: a8dad76864749524aab0a1a35836a409, type: 3}

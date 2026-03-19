@@ -27,10 +27,18 @@ public class Enemy3_Controller : MonoBehaviour
     int ground;
     int enemy3;
 
-    float body;
-
     float damageCount;
     bool isDamaged = false;
+
+    [Header("ダメージ時間・ダメージ移動量")]
+    public float stunTime = 0.2f;
+    public float damageSpeed = 0.5f;
+
+    float damageTimer; //ダメージ時間を測るタイマー
+    bool isDamage; //ダメージフラグ
+
+    [Header("点滅対象")]
+    public GameObject enemyBody;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,7 +51,21 @@ public class Enemy3_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isDamaged = false;
+        //ダメージ中なら減らす
+        if (damageTimer > 0)
+        {
+            damageTimer -= Time.deltaTime;
+
+            float val = Mathf.Sin(Time.time * 50);
+            if (val > 0) enemyBody.SetActive(true);
+            else enemyBody.SetActive(false);
+
+        }
+        else if (isDamage)
+        {
+            enemyBody.SetActive(true);
+            isDamage = false;
+        }
 
         ground = LayerMask.NameToLayer("Ground");
         enemy3 = LayerMask.NameToLayer("Enemy");
@@ -98,7 +120,8 @@ public class Enemy3_Controller : MonoBehaviour
 
                 //Debug.Log(life);
 
-                Invoke("Damaged", 1.0f);
+                damageTimer = stunTime;
+                isDamage = true;
 
                 if (life <= 0)
                 {
@@ -107,12 +130,4 @@ public class Enemy3_Controller : MonoBehaviour
             }
         }
     }
-
-    void Damaged()
-    {
-        isDamaged = true;
-    }
-
-
-
 }

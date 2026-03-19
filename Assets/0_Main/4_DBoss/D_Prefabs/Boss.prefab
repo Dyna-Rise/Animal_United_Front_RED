@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   hp: 10
-  bodyObject: {fileID: 7928121638000556970}
+  bodyObject: {fileID: 1261968599464263043}
   invincibilityDuration: 1
   moveSpeed: 2
   dropSpeed: 4.5
@@ -288,6 +288,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
+--- !u!1 &1261968599464263043 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1537008473948126, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
+  m_PrefabInstance: {fileID: 1262727703192699485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1267664068277815531 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}

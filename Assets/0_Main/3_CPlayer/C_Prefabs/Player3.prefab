@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4420614373280303829}
   - component: {fileID: 4876560079662081972}
   - component: {fileID: 2806446469280219204}
+  - component: {fileID: 2417164232993393246}
   m_Layer: 0
   m_Name: Player3
   m_TagString: Player
@@ -156,6 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac309981be8d09d4589f93d109b3ad83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  animeBody: {fileID: 6744989655918896103}
   playerSpeed: 3
   playerJump: 8
   gravity: 20
@@ -175,7 +177,7 @@ MonoBehaviour:
   dashSpeedMultiplier: 3
   dashDuration: 0.4
   dashCooldown: 0.5
-  afterimagePrefab: {fileID: 9143266182796193799, guid: c98b8a1486b01d445ab6c93fcd5320af, type: 3}
+  afterimagePrefab: {fileID: 9143266182796193799, guid: e9f2f20fdaa30aa4dbe49bd6b11a2111, type: 3}
   afterimageSpawnInterval: 0.05
   afterimageOffset: {x: 0, y: 0, z: 0.1}
 --- !u!114 &4876560079662081972
@@ -194,6 +196,7 @@ MonoBehaviour:
   knockbackDuration: 0.2
   invincibilityTime: 1.5
   targetBody: {fileID: 944495945217471903}
+  damageClip: {fileID: 8300000, guid: dfbaa8d814908a9468391ddffcc6e43c, type: 3}
 --- !u!114 &2806446469280219204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +218,103 @@ MonoBehaviour:
   hovUpMaxPower: 2.5
   hovUpTime: 0
   hovAccelerationTime: 0.5
+--- !u!82 &2417164232993393246
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092171274751486606}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -2977645954018569795, guid: 03b003060cd0f8a47955f14310454af6, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4230823069707019456
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +358,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chicken
       objectReference: {fileID: 0}
+    - target: {fileID: 3366332338714142291, guid: 0344caf6825754c4daa6a44ddfbe4437, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 1e431a48673e9564b8023edf00fd204e, type: 2}
     - target: {fileID: 4223721741948415491, guid: 0344caf6825754c4daa6a44ddfbe4437, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -311,5 +415,10 @@ GameObject:
 --- !u!4 &5539221073175187888 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4223721741948415491, guid: 0344caf6825754c4daa6a44ddfbe4437, type: 3}
+  m_PrefabInstance: {fileID: 8521629339158773683}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6744989655918896103 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3159817090502761556, guid: 0344caf6825754c4daa6a44ddfbe4437, type: 3}
   m_PrefabInstance: {fileID: 8521629339158773683}
   m_PrefabAsset: {fileID: 0}

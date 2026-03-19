@@ -72,6 +72,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy3_Controller
   life: 5
+  stunTime: 0.2
+  damageSpeed: 0.5
+  enemyBody: {fileID: 9165832411518745749}
 --- !u!54 &3352635944264958947
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -261,5 +264,10 @@ PrefabInstance:
 --- !u!4 &8392533425724483119 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4336938371776195469, guid: 85906bcee8198914c9be08c27a11bace, type: 3}
+  m_PrefabInstance: {fileID: 5212814142093479330}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9165832411518745749 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3991375454132728119, guid: 85906bcee8198914c9be08c27a11bace, type: 3}
   m_PrefabInstance: {fileID: 5212814142093479330}
   m_PrefabAsset: {fileID: 0}

@@ -6,6 +6,7 @@ public class SlashAttack : MonoBehaviour
 {
     PlayerMove playerMove;
     GameObject playerFollower;
+    AudioSource audio;
 
     [Header("生成プレハブ・位置")]
     public GameObject[] slashEffectPrefabs;
@@ -20,10 +21,14 @@ public class SlashAttack : MonoBehaviour
     float lastAttackTime = -Mathf.Infinity; // 最後に攻撃した時間
     float comboTimer = 0f;        // コンボリセット用のタイマー
 
+    [Header("SE")]
+    public AudioClip slashClip;
+
     void Start()
     {
         playerMove = GetComponent<PlayerMove>();
         playerFollower = GameObject.FindGameObjectWithTag("PlayerFollower");
+        audio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -83,6 +88,7 @@ public class SlashAttack : MonoBehaviour
     // 各段階の攻撃を生成
     void Slash(int stageIndex)
     {
+        GetComponent<AudioSource>().PlayOneShot(slashClip);
 
         // プレイヤーの最後の向きを取得
         float playerFacingDirectionX = playerMove.LastInputDirection;
@@ -109,11 +115,11 @@ public class SlashAttack : MonoBehaviour
         //生成したエフェクトの向きを調整
         if (playerFacingDirectionX < 0)
         {
-            slashEffect.transform.localScale = new Vector3(2, 2, 1);
-        }
-        else if(playerFacingDirectionX < 0)
-        {
             slashEffect.transform.localScale = new Vector3(-2, 2, 1);
+        }
+        else if(playerFacingDirectionX > 0)
+        {
+            slashEffect.transform.localScale = new Vector3(2, 2, 1);
         }
 
         // 生成されたエフェクトは、時間差で破棄

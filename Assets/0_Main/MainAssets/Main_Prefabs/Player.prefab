@@ -65,7 +65,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!135 &5630668857425387600
 SphereCollider:
@@ -155,8 +155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac309981be8d09d4589f93d109b3ad83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  animeBody: {fileID: 0}
   playerSpeed: 3
-  playerJump: 8
+  playerJump: 10
   gravity: 20
   inputDirection: 0
 --- !u!114 &1391817434451244304

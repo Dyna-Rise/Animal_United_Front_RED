@@ -203,6 +203,9 @@ public class BossController : MonoBehaviour
 
     void BossDie()
     {
+        GameManager.gameState = GameState.gameclear;
+        Destroy(gameObject);
+
         StopAllCoroutines();
         if (bodyObject != null) bodyObject.SetActive(false);
         Destroy(gameObject, 1.0f);

@@ -28,6 +28,17 @@ public class PlayerChanger : MonoBehaviour
 
     Coroutine gameOverCoroutine;
 
+    public float Player2CurrentTime
+    {
+        get { return player2CurrentTime; }
+    }
+
+    public float Player3CurrentTime
+    {
+        get { return player3CurrentTime; }
+    }
+
+
     void Awake()
     {
         playerFollow = GetComponent<PlayerFollow>();
@@ -46,7 +57,9 @@ public class PlayerChanger : MonoBehaviour
     {
         if (player2CurrentTime > 0)
         {
-            Destroy(player1);
+            if (player1 != null) Destroy(player1);
+            if (player3 != null) Destroy(player3);
+            isPlayer3 = false;
             player2 = Instantiate(
                 changePlayers[0],
                 playerFollow.transform.position,
@@ -54,18 +67,19 @@ public class PlayerChanger : MonoBehaviour
             //エフェクトの発生
             Instantiate(
                 changeEffect,
-                playerFollow.transform.position,
+                playerFollow.transform.position + new Vector3(0, 0, -1),
                 Quaternion.identity);
             StartCoroutine(PlayerFollowRest());
             isPlayer2 = true;
         }
     }
-
     public void Player3Change()
     {
         if (player3CurrentTime > 0)
         {
-            Destroy(player1);
+            if (player1 != null) Destroy(player1);
+            if (player2 != null) Destroy(player2);
+            isPlayer2 = false;
             player3 = Instantiate(
                 changePlayers[1],
                 playerFollow.transform.position,
@@ -73,7 +87,7 @@ public class PlayerChanger : MonoBehaviour
             //エフェクトの発生
             Instantiate(
                 changeEffect,
-                playerFollow.transform.position,
+                playerFollow.transform.position + new Vector3(0, 0, -1),
                 Quaternion.identity);
             StartCoroutine(PlayerFollowRest());
             isPlayer3 = true;
@@ -91,7 +105,7 @@ public class PlayerChanger : MonoBehaviour
         //エフェクトの発生
         Instantiate(
             changeEffect,
-            playerFollow.transform.position,
+            playerFollow.transform.position + new Vector3(0, 0, -1),
             Quaternion.identity);
         StartCoroutine(PlayerFollowRest());
         isPlayer2 = false;

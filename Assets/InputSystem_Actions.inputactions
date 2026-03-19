@@ -11,7 +11,7 @@
                     "type": "Value",
                     "id": "351f2ccd-1f9f-44bf-9bec-d62ac5c5f408",
                     "expectedControlType": "Vector2",
-                    "processors": "",
+                    "processors": "StickDeadzone(min=0.5)",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -39,7 +39,7 @@
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold(duration=0.01,pressPoint=0.01)",
+                    "interactions": "Hold(duration=0.1,pressPoint=0.1)",
                     "initialStateCheck": true
                 },
                 {
@@ -57,7 +57,7 @@
                     "id": "f1ba0d36-48eb-4cd5-b651-1c94a6531f70",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(pressPoint=0.1)",
                     "initialStateCheck": true
                 },
                 {
@@ -344,11 +344,11 @@
                 },
                 {
                     "name": "",
-                    "id": "40067205-730b-4e4b-9a91-9532f2a391ae",
+                    "id": "b8dbad6a-34a9-49c2-825e-d80ee8bdd286",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
+                    "groups": "",
                     "action": "Next",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -443,7 +443,7 @@
                 },
                 {
                     "name": "",
-                    "id": "0efc1a65-366b-4837-bd7f-e598e2a891c3",
+                    "id": "7365d7fc-0b75-4b4a-b756-a8bfa3b2701b",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",

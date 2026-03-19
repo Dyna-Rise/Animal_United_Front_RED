@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9036136464985580776}
   m_Layer: 0
   m_Name: PlayerFollower
-  m_TagString: Enemy2
+  m_TagString: PlayerFollower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,6 +63,6 @@ MonoBehaviour:
   changePlayers:
   - {fileID: 4382951889173849336, guid: 5cbca844380125547b46ab0a0731547f, type: 3}
   - {fileID: 1092171274751486606, guid: 60e727f0c43f3ab4ca45edd22bb74ff4, type: 3}
-  changeEffect: {fileID: 6488590089204706865, guid: 7c1c5e6456896094e824e1f4fae58f29, type: 3}
+  changeEffect: {fileID: 9125112913351929297, guid: 51f054a9b4e97834c9d7fe11886b38bc, type: 3}
   isPlayer2: 0
   isPlayer3: 0

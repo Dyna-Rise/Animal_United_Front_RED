@@ -7,6 +7,7 @@ public class KnockbackHandler : MonoBehaviour
     PlayerMove playerMove;
     PlayerDash playerDash;
     CharacterController controller;
+    AudioSource audio;
 
     [Header("ノックバック力・リアクション時間・硬直時間")]
     public float knockbackForce = 10f;
@@ -15,6 +16,9 @@ public class KnockbackHandler : MonoBehaviour
     [Header("無敵時間・点滅対象")]
     public float invincibilityTime = 1.5f;
     public GameObject targetBody;
+
+    [Header("SE")]
+    public AudioClip damageClip;
 
     bool isInvinciblility; //無敵フラグ
 
@@ -26,6 +30,7 @@ public class KnockbackHandler : MonoBehaviour
         playerMove = GetComponent<PlayerMove>();
         playerDash = GetComponent<PlayerDash>();
         controller = GetComponent<CharacterController>();
+        audio = GetComponent<AudioSource>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -34,6 +39,7 @@ public class KnockbackHandler : MonoBehaviour
         if (other.CompareTag("Enemy") && knockBackCoroutine == null && !isInvinciblility)
         {
             GameManager.playerLife--;
+            audio.PlayOneShot(damageClip);
             if(GameManager.playerLife <= 0)
             {
                 GameManager.gameState = GameState.gameover;

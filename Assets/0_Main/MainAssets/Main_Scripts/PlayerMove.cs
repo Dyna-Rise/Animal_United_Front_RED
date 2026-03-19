@@ -6,6 +6,10 @@ public class PlayerMove : MonoBehaviour
 {
     //コンポーネント取得
     CharacterController controller;
+    Animator animator;
+
+    [Header("アニメ対象")]
+    public GameObject animeBody;
 
     [Header("スピード・ジャンプ")]
     public float playerSpeed = 3.0f;
@@ -57,6 +61,13 @@ public class PlayerMove : MonoBehaviour
         moveDirection.x = xValue;
     }
 
+    void OnAttack(InputValue value)
+    {
+        if(GameManager.gameState == GameState.gameover)
+        {
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().Retry();
+        }
+    }
 
     //移動ボタンのアクション
     void OnMove(InputValue value)
@@ -66,12 +77,12 @@ public class PlayerMove : MonoBehaviour
         {
             Vector2 input = value.Get<Vector2>();
             inputDirection = input.x;
-            if(inputDirection > 0)
+            if (inputDirection > 0)
             {
                 lastInputDirection = 1;
                 //Debug.Log("lastInput:" + lastInputDirection);
             }
-            else if(inputDirection < 0)
+            else if (inputDirection < 0)
             {
                 lastInputDirection = -1;
             }
@@ -92,7 +103,11 @@ public class PlayerMove : MonoBehaviour
 
     void OnPrevious(InputValue value)
     {
-        if (!playerChanger.isPlayer3)
+        if (playerChanger.isPlayer3)
+        {
+            playerChanger.Player2Change();
+        }
+        else if (!playerChanger.isPlayer3)
         {
             if (!playerChanger.isPlayer2)
             {
@@ -107,7 +122,11 @@ public class PlayerMove : MonoBehaviour
 
     void OnNext(InputValue value)
     {
-        if (!playerChanger.isPlayer2)
+        if (playerChanger.isPlayer2)
+        {
+            playerChanger.Player3Change();
+        }
+        else if (!playerChanger.isPlayer2)
         {
             if (!playerChanger.isPlayer3)
             {
@@ -130,6 +149,7 @@ public class PlayerMove : MonoBehaviour
         controller = GetComponent<CharacterController>();
         playerChanger = GameObject.FindGameObjectWithTag("PlayerFollower").GetComponent<PlayerChanger>();
         initialSpeed = playerSpeed;
+        animator = animeBody.GetComponent<Animator>();
     }
 
     void Update()
@@ -138,7 +158,7 @@ public class PlayerMove : MonoBehaviour
         if (isDashDirectionOverridden)
         {
             currentInputDirection = dashInputDirection;
-            if(currentInputDirection > 0)
+            if (currentInputDirection > 0)
             {
                 lastInputDirection = 1;
             }
@@ -170,6 +190,16 @@ public class PlayerMove : MonoBehaviour
 
         //事前計算に基づいて移動
         controller.Move(moveDirection * Time.deltaTime);
+
+        if (moveDirection.x != 0)
+        {
+            animator.SetBool("run", true);
+        }
+        else
+        {
+            animator.SetBool("run", false);
+
+        }
 
         //もし地面についていたらy成分は0にリセット
         if (controller.isGrounded) moveDirection.y = 0;
@@ -221,9 +251,15 @@ public class PlayerMove : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "StageGoal")
+        if (other.gameObject.tag == "StageGoal")
         {
             GameManager.gameState = GameState.stageclear;
         }
+        if (other.gameObject.tag == "Dead")
+        {
+            GameManager.playerLife = 0;
+            GameManager.gameState = GameState.gameover;
+        }
+
     }
 }
