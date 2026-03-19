@@ -15,6 +15,9 @@ public class BossController : MonoBehaviour
     public float maxXCoordinate = 5.0f;  // 移動範囲（右端）
     public Vector3 startPos;             // 画面外の待機・帰還位置
 
+    [Header("追加：ステージ基準")]
+    public Transform floorObject; // インスペクターでFloorをドラッグ＆ドロップしてください
+
     [Header("攻撃")]
     public float attackRange = 5.0f;     // 攻撃に切り替わる距離
     public float bossShotSpeed = 5.0f;   // 弾の速度
@@ -40,6 +43,10 @@ public class BossController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("PlayerFollower");
+
+        // startPosが未設定（0,0,0）の場合の保険として、現在の位置を初期待機位置にする
+        if (startPos == Vector3.zero) startPos = transform.position;
+
         targetPosition = startPos;
     }
 
@@ -130,8 +137,22 @@ public class BossController : MonoBehaviour
 
         // 2. 落下ターゲット（高さ）の決定
         float playerY = player.transform.position.y;
-        float groundY = 0f;
-        float targetY = Random.Range(playerY + 2.0f, groundY + 3.5f);
+        // Floorが設定されていればそのY座標を使い、なければ前回同様0fを基準にする
+        float groundY;
+        if (floorObject != null)
+        {
+            // Floorオブジェクトがインスペクターでセットされていれば、そのY座標を使う
+            groundY = floorObject.position.y;
+        }
+        else
+        {
+            // セットされていなければ、安全のために 0f を基準にする
+            groundY = 0f;
+        }
+        // プレイヤーの頭上(playerY+2) から 床の少し上(groundY + スケール考慮) の間でランダム
+        // 床のScale Yが25と大きいので、中心座標(groundY)より少し上が実際の表面になります
+        float surfaceY = groundY + (floorObject != null ? floorObject.localScale.y * 0.5f : 0f);
+        float targetY = Random.Range(playerY + 2.0f, surfaceY + 5.0f);
 
         targetPosition = new Vector3(targetX, targetY, 0);
         moveSpeed = dropSpeed;
@@ -165,7 +186,7 @@ public class BossController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PlayerAttack") && !isInvincible && hp > 0)
+        if (other.gameObject.tag == "PlayerAttack" && !isInvincible && hp > 0)
         {
             TakeDamage(1);
         }
