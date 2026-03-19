@@ -480,7 +480,7 @@ SkinnedMeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  serializedVersion: 2
+serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
@@ -2633,6 +2633,7 @@ PrefabInstance:
       value: -20.498
       objectReference: {fileID: 0}
     - target: {fileID: 7073043801467884127, guid: d708e9ec3606c51489bca6b13def93dd, type: 3}
+
       propertyPath: m_LocalEulerAnglesHint.z
       value: 337.03
       objectReference: {fileID: 0}
@@ -2644,6 +2645,7 @@ PrefabInstance:
 --- !u!4 &8681600478767250326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7073043801467884127, guid: d708e9ec3606c51489bca6b13def93dd, type: 3}
+
   m_PrefabInstance: {fileID: 1896932983589169609}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3856471201743122590
@@ -2805,6 +2807,7 @@ PrefabInstance:
       value: -20.511
       objectReference: {fileID: 0}
     - target: {fileID: 7073043801467884127, guid: d708e9ec3606c51489bca6b13def93dd, type: 3}
+
       propertyPath: m_LocalEulerAnglesHint.z
       value: 337.017
       objectReference: {fileID: 0}
@@ -2891,6 +2894,7 @@ PrefabInstance:
       value: -20.511
       objectReference: {fileID: 0}
     - target: {fileID: 7073043801467884127, guid: d708e9ec3606c51489bca6b13def93dd, type: 3}
+
       propertyPath: m_LocalEulerAnglesHint.z
       value: 337.017
       objectReference: {fileID: 0}
