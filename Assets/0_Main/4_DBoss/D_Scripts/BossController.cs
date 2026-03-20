@@ -152,7 +152,7 @@ public class BossController : MonoBehaviour
         // プレイヤーの頭上(playerY+2) から 床の少し上(groundY + スケール考慮) の間でランダム
         // 床のScale Yが25と大きいので、中心座標(groundY)より少し上が実際の表面になります
         float surfaceY = groundY + (floorObject != null ? floorObject.localScale.y * 0.5f : 0f);
-        float targetY = Random.Range(playerY + 2.0f, surfaceY + 5.0f);
+        float targetY = Random.Range(playerY + 1.5f, surfaceY + 2.5f);
 
         targetPosition = new Vector3(targetX, targetY, 0);
         moveSpeed = dropSpeed;
