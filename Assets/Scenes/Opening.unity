@@ -327,13 +327,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203844586}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.47044855, y: 0.3610948, z: 0.2256713, w: 0.7728914}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 34.349, y: 68.948, z: 56.515}
 --- !u!1 &336118700
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,8 +2085,8 @@ GameObject:
   - component: {fileID: 1760009193}
   - component: {fileID: 1760009192}
   - component: {fileID: 1760009191}
-  - component: {fileID: 1760009195}
   - component: {fileID: 1760009196}
+  - component: {fileID: 1760009195}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2191,7 +2191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   talkText: {fileID: 1170198557}
   talkData: {fileID: 11400000, guid: 2b8eeaad16554a349b7f0382ef46c8b3, type: 2}
-  displayDuration: 5
+  displayDuration: 4
   sceneName: Stage1
 --- !u!82 &1760009196
 AudioSource:

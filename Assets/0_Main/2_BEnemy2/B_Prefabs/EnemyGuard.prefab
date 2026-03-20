@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 9066003017447270506}
   - component: {fileID: 394434144656608694}
   - component: {fileID: -941942706563869718}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyGuard
   m_TagString: EnemyGuard
   m_Icon: {fileID: 0}

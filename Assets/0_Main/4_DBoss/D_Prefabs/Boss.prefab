@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6616867808369226225}
   - component: {fileID: 8006217140683273730}
   - component: {fileID: 6386746561326928742}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -257,19 +257,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.76040596
+      value: -0.5376882
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.45922914
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.5376882
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.6494481
+      value: 0.45922914
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -277,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4989476675865270, guid: 5c7f0950aa535ce4faef155ad244c136, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

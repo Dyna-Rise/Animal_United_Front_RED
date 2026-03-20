@@ -438,13 +438,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.38624728, y: -0.732702, z: -0.17152028, w: 0.5334244}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 9.249, y: -112.147, z: -49.364}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1067,6 +1067,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3368461653760202200, guid: 3238946bb79154d4aa27b82d6ed1934c, type: 3}
     - target: {fileID: 9036136464985580776, guid: 7a35c768a5a081b42ba34068a728cca4, type: 3}
+      propertyPath: player2TimeMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9036136464985580776, guid: 7a35c768a5a081b42ba34068a728cca4, type: 3}
+      propertyPath: player3TimeMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9036136464985580776, guid: 7a35c768a5a081b42ba34068a728cca4, type: 3}
       propertyPath: 'changePlayers.Array.data[0]'
       value: 
       objectReference: {fileID: 4382951889173849336, guid: 5cbca844380125547b46ab0a0731547f, type: 3}
@@ -1274,7 +1282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4917599867559172958, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.04
+      value: 11.23
       objectReference: {fileID: 0}
     - target: {fileID: 4917599867559172958, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1319,6 +1327,14 @@ PrefabInstance:
     - target: {fileID: 5298283705105324277, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
       propertyPath: bottomY
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
+      propertyPath: hp
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006217140683273730, guid: 660e9c8719b9acc448a24b76b7db17d2, type: 3}
+      propertyPath: attackRange
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 3042566049504603249}
   - component: {fileID: 7835908412405493010}
   - component: {fileID: 1093936662477964517}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ThrowingObject
   m_TagString: Enemy
   m_Icon: {fileID: 0}

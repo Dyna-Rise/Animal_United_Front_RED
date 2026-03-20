@@ -49,13 +49,11 @@ public class PlayerMove : MonoBehaviour
         get { return lastInputDirection; }
     }
 
-    //追加
     public void SetMoveDirectionY(float yValue)
     {
         moveDirection.y = yValue;
     }
 
-    //追加
     public void SetMoveDirectionX(float xValue)
     {
         moveDirection.x = xValue;
@@ -81,6 +79,20 @@ public class PlayerMove : MonoBehaviour
             {
                 lastInputDirection = 1;
                 //Debug.Log("lastInput:" + lastInputDirection);
+            }
+            else if (inputDirection < 0)
+            {
+                lastInputDirection = -1;
+            }
+        }
+        // ダッシュ中だが、空中にいる場合
+        else if (isDashDirectionOverridden && !controller.isGrounded)
+        {
+            Vector2 input = value.Get<Vector2>();
+            inputDirection = input.x;
+            if (inputDirection > 0)
+            {
+                lastInputDirection = 1;
             }
             else if (inputDirection < 0)
             {
@@ -155,7 +167,7 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         // ダッシュによって入力方向が上書きされていればその値を使用
-        if (isDashDirectionOverridden)
+        if (isDashDirectionOverridden && GetComponent<PlayerDash>().CoolDownTimer > 0)
         {
             currentInputDirection = dashInputDirection;
             if (currentInputDirection > 0)
@@ -165,6 +177,16 @@ public class PlayerMove : MonoBehaviour
             else if (currentInputDirection < 0)
             {
                 lastInputDirection = -1;
+            }
+        }
+        else if (isDashDirectionOverridden && GetComponent<PlayerDash>().CoolDownTimer <= 0)
+        {
+            if (!controller.isGrounded)
+            {
+                if (currentInputDirection != inputDirection && inputDirection != 0)
+                {
+                    currentInputDirection = inputDirection;
+                }
             }
         }
         else
@@ -226,8 +248,8 @@ public class PlayerMove : MonoBehaviour
     // PlayerDashからダッシュ方向の強制を解除するメソッド
     public void ResetDashDirection()
     {
-        isDashDirectionOverridden = false;
-        dashInputDirection = 0f;
+            isDashDirectionOverridden = false;
+            dashInputDirection = 0f;
     }
 
     //移動入力を無効化するメソッド

@@ -5,8 +5,8 @@ using System.Collections.Generic; // Listを使用するために追加
 public class PlayerChanger : MonoBehaviour
 {
     [Header("制限時間")]
-    public float player2TimeMax = 15.0f; // Player1の最大変身時間
-    public float player3TimeMax = 15.0f; // Player2の最大変身時間
+    public float player2TimeMax = 10.0f; // Player1の最大変身時間
+    public float player3TimeMax = 10.0f; // Player2の最大変身時間
 
     [Header("デフォルトキャラ")]
     public GameObject defaultPlayer;

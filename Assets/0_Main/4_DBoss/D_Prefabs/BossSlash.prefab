@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2574978136244382923}
   - component: {fileID: 5607105155837499599}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BossSlash
   m_TagString: Enemy
   m_Icon: {fileID: 0}
